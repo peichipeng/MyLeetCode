@@ -1,37 +1,34 @@
 class Solution {
 public:
     int characterReplacement(string s, int k) {
-        int lo = 1;
-        int hi = s.size() + 1;
-        while (lo + 1 < hi) {
-            int mid = lo + (hi - lo) / 2;
+        unordered_set<char> allLetters;
 
-            if (canMakeValidSubstring(s, mid, k)) {
-                lo = mid;
-            } else {
-                hi = mid;
+        for (int i = 0; i < s.size(); i++) {
+            allLetters.insert(s[i]);
+        }
+
+        int maxLength = 0;
+        for (char letter: allLetters) {
+            int start = 0;
+            int count = 0;
+
+            for (int end = 0; end < s.size(); end++) {
+                if (s[end] == letter) {
+                    count++;
+                }
+                while (!isWindowValid(start, end, count, k)) {
+                    if (s[start] == letter) {
+                        count--;
+                    }
+                    start++;
+                }
+                maxLength = max(end + 1 - start, maxLength);
             }
         }
-        return lo;
+        return maxLength;
     }
 private:
-    bool canMakeValidSubstring(string& s, int length, int k) {
-        int record[26] = {0};
-        int maxFrequency = 0;
-        int start = 0;
-        for (int end = 0; end < s.size(); end++) {
-            record[s[end] - 'A'] += 1;
-
-            // if the window exceeds length
-            if (end + 1 - start > length) {
-                record[s[start] - 'A'] -= 1;
-                start++;
-            }
-            maxFrequency = max(record[s[end] - 'A'], maxFrequency);
-
-            // return true if the window with the length is valid
-            if (length - maxFrequency <= k) return true;
-        }
-        return false;
+    bool isWindowValid(int start, int end, int count, int k) {
+        return end + 1 - start - count <= k;
     }
 };
