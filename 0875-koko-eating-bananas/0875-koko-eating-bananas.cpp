@@ -11,7 +11,7 @@ public:
             int mid = left + (right - left) / 2;
             long long hour = 0;
             for (int i = 0; i < piles.size(); i++) {
-                hour += ceil((1.0 * piles[i]) / mid);
+                hour += piles[i] / mid + (piles[i] % mid != 0);
             }
             if (hour > h) {
                 left = mid + 1;
