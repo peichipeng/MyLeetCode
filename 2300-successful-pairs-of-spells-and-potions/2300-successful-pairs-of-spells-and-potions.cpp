@@ -7,7 +7,7 @@ public:
             int left = 0, right = potions.size() - 1;
             while (left <= right) {
                 int mid = left + (right - left) / 2;
-                long long product = spells[i] * potions[mid];
+                long long product = (long long)spells[i] * potions[mid];
                 if (product < success) {
                     left = mid + 1;
                 } else {
