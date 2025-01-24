@@ -11,20 +11,21 @@
  */
 class Solution {
 public:
-    int maxDepth(TreeNode* root) {
-        queue<TreeNode*> que;
-        if (root) que.push(root);
-        int depth = 0;
-        while (!que.empty()) {
-            depth++;
-            int size = que.size();
-            while (size--) {
-                TreeNode* node = que.front();
-                que.pop();
-                if (node->left) que.push(node->left);
-                if (node->right) que.push(node->right);
-            }
+    int result;
+    void getDepth(TreeNode* node, int depth) {
+        result = depth > result ? depth : result;
+        if (node->left == NULL && node->right == NULL) return;
+        if (node->left) {
+            getDepth(node->left, depth + 1);
         }
-        return depth;
+        if (node->right) {
+            getDepth(node->right, depth + 1);
+        }
+    }
+    int maxDepth(TreeNode* root) {
+        result = 0;
+        if (!root) return result;
+        getDepth(root, 1);
+        return result;
     }
 };
