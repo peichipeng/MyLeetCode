@@ -13,9 +13,15 @@ class Solution {
 public:
     TreeNode* invertTree(TreeNode* root) {
         if (!root) return root;
-        swap(root->left, root->right);
-        invertTree(root->left);
-        invertTree(root->right);
+        stack<TreeNode*> st;
+        st.push(root);
+        while (!st.empty()) {
+            TreeNode* node = st.top();
+            st.pop();
+            swap(node->left, node->right);
+            if (node->right) st.push(node->right);
+            if (node->left) st.push(node->left);
+        }
         return root;
     }
 };
