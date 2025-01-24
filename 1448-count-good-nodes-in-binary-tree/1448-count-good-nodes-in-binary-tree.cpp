@@ -11,22 +11,21 @@
  */
 class Solution {
 public:
-    int numGoodNodes = 0;
-
-    void dfs(TreeNode* node, int maxSoFar) {
-        if (node->val >= maxSoFar) {
-            numGoodNodes++;
-        }
-        if (node->left) {
-            dfs(node->left, max(maxSoFar, node->val));
-        }
-        if (node->right) {
-            dfs(node->right, max(maxSoFar, node->val));
-        }
-    }
-
     int goodNodes(TreeNode* root) {
-        dfs(root, INT_MIN);
+        stack<pair<TreeNode*, int>> st;
+        int numGoodNodes = 0;
+        if (root) st.push({root, INT_MIN});
+        while (!st.empty()) {
+            pair<TreeNode*, int> pair = st.top();
+            st.pop();
+            if (pair.first->val >= pair.second) numGoodNodes++;
+            if (pair.first->right) {
+                st.push({pair.first->right, max(pair.second, pair.first->val)});
+            }
+            if (pair.first->left) {
+                st.push({pair.first->left, max(pair.second, pair.first->val)});
+            }
+        }
         return numGoodNodes;
     }
 };
