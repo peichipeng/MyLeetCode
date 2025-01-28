@@ -1,12 +1,25 @@
 class Solution {
 public:
-    int store(vector<int>& nums, int cur) {
-        if (nums[cur] == cur) return cur;
-        int next = nums[cur];
-        nums[cur] = cur;
-        return store(nums, next);
-    }
     int findDuplicate(vector<int>& nums) {
-        return store(nums, 0);
+        auto small_or_equal = [&](int cur) {
+            int count = 0;
+            for (auto& num : nums) {
+                if (num <= cur) count++;
+            }
+            return count;
+        };
+
+        int low = 1, high = nums.size();
+        int duplicate = -1;
+        while (low <= high) {
+            int cur = (low + high) / 2;
+            if (small_or_equal(cur) > cur) {
+                duplicate = cur;
+                high = cur - 1;
+            } else {
+                low = cur + 1;
+            }
+        }
+        return duplicate;
     }
 };
