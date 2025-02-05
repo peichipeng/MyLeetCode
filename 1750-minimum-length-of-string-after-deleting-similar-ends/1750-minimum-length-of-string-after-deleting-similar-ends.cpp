@@ -8,7 +8,6 @@ public:
             while (left <= right && s[left] == letter) left++;
             while (left <= right && s[right] == letter) right--;
         }
-        if (left > right) return 0;
         return right - left + 1;
     }
 };
