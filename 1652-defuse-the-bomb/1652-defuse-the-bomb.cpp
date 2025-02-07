@@ -4,27 +4,18 @@ public:
         int n = code.size();
         vector<int> result(n, 0);
         if (k == 0) return result;
-        if (k > 0) {
-            int sum = 0;
-            for (int i = 0; i < k; i++) {
-                sum += code[i];
-            }
-            for (int i = k; i < n + k; i++) {
-                sum += code[i % n] - code[i - k];
-                result[i - k] = sum;
-            }
-        } else {
-            int sum = 0;
-            for (int i = n + k; i < n; i++) {
-                sum += code[i];
-            }
-            result[0] = sum;
-            for (int i = 1; i < n; i++) {
-                int preIndex = i + k - 1;
-                if (preIndex < 0) preIndex = n + preIndex;
-                sum += code[i - 1] - code[preIndex];
-                result[i] = sum;
-            }
+        int start = 1, end = k, sum = 0;
+        if (k < 0) {
+            start = n + k;
+            end = n - 1;
+        }
+        for (int i = start; i <= end; i++) sum += code[i];
+        for (int i = 0; i < code.size(); i++) {
+            result[i] = sum;
+            sum -= code[start % n];
+            sum += code[(end + 1) % n];
+            start++;
+            end++;
         }
         return result;
     }
