@@ -1,32 +1,26 @@
 class Solution {
 public:
     int minOperations(vector<int>& nums, int x) {
-        int minOps = INT_MAX;
-        int sum = 0;
-        int end = 0;
-        while (sum < x && end < nums.size()) {
-            sum += nums[end];
-            end++;
+        int total = 0;
+        for (int num : nums) {
+            total += num;
         }
-        if (sum < x) return -1;
-        if (sum == x) minOps = min(minOps, end);
-        sum = 0;
-        end = nums.size() - 1;
-        while (sum < x && end >= 0) {
-            sum += nums[end];
-            end--;
-        }
-        if (sum == x) minOps = min(minOps, int(nums.size()) - end - 1);
-        end++;
-        sum = 0;
-        for (int start = end; start < nums.size(); start++) {
-            while (sum < x) {
-                sum += nums[end % nums.size()];
-                end++;
+        int n = nums.size();
+        int maxLength = -1;
+        int left = 0;
+        int currentSum = 0;
+
+        for (int right = 0; right < n; right++) {
+            currentSum += nums[right];
+
+            while (currentSum > total - x && left <= right) {
+                currentSum -= nums[left];
+                left++;
             }
-            if (sum == x) minOps = min(minOps, end - start);
-            sum -= nums[start];
+            if (currentSum == total - x) {
+                maxLength = max(right - left + 1, maxLength);
+            }
         }
-        return minOps == INT_MAX ? -1 : minOps;
+        return maxLength != -1 ? n - maxLength : -1;
     }
 };
