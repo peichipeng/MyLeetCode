@@ -1,11 +1,35 @@
 class Solution {
 public:
     string removeOccurrences(string s, string part) {
-        while (s.find(part) != string::npos) {
-            size_t part_start_index = s.find(part);
+        stack<char> st;
+        int strLength = s.size();
+        int partLength = part.size();
 
-            s = s.substr(0, part_start_index) + s.substr(part_start_index + part.size());
+        for (int index = 0; index < strLength; index++) {
+            st.push(s[index]);
+
+            if (st.size() >= partLength && checkMatch(st, part, partLength)) {
+                for (int j = 0; j < partLength; j++) {
+                    st.pop();
+                }
+            }
         }
-        return s;
+
+        string result = "";
+        while (!st.empty()) {
+            result = st.top() + result;
+            st.pop();
+        }
+        return result;
+    }
+private:
+    bool checkMatch(stack<char>& st, string& part, int partLength) {
+        stack<char> temp = st;
+
+        for (int partIndex = partLength - 1; partIndex >= 0; partIndex--) {
+            if (temp.top() != part[partIndex]) return false;
+            temp.pop();
+        }
+        return true;
     }
 };
