@@ -5,15 +5,15 @@ public:
         unordered_map<int, int> map;
         for (int num : nums) {
             int val = num;
-            int digitsSum = 0;
+            int digitSum = 0;
             while (val > 0) {
-                digitsSum += val % 10;
+                digitSum += val % 10;
                 val /= 10;
             }
-            if (map.find(digitsSum) != map.end()) {
-                maxVal = max(maxVal, num + map[digitsSum]);
+            if (map.find(digitSum) != map.end()) {
+                maxVal = max(maxVal, num + map[digitSum]);
             }
-            map[digitsSum] = max(map[digitsSum], num);
+            map[digitSum] = max(map[digitSum], num);
         }
         return maxVal;
     }
